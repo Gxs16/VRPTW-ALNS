@@ -1,20 +1,21 @@
 package main.alns.destroy;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Random;
-
 import main.algrithm.MyALNSSolution;
 import main.alns.operation.ALNSAbstractOperation;
 import main.domain.Route;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Random;
+import java.util.logging.Logger;
 
 /**  
 * <p>Title: RandomDestroy</p>  
 * <p>Description: </p>  
 * @author zll_hust  
-* @date 2020年3月19日
  */
 public class RandomDestroy extends ALNSAbstractOperation implements IALNSDestroy {
+	private static final Logger logger = Logger.getLogger(RandomDestroy.class.getSimpleName());
 	/*
 	@Override
 	public ALNSStrategieVisualizationManager getVisualizationManager() {
@@ -26,7 +27,7 @@ public class RandomDestroy extends ALNSAbstractOperation implements IALNSDestroy
 	public MyALNSSolution destroy(MyALNSSolution s, int removeNr) throws Exception {
 		
 		if(s.removalCustomers.size() != 0) {
-			System.err.println("removalCustomers is not empty.");
+			logger.severe("removalCustomers is not empty.");
 			return s;
 		}
 		

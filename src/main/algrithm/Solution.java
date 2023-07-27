@@ -87,13 +87,13 @@ public class Solution {
     
     @Override
     public String toString() {
-        String result = "Solution{" +
-                "totalCost=" +  Math.round(totalCost * 100) / 100.0 +
-                ", routes=[";
+        StringBuilder result = new StringBuilder("Solution{" +
+                "totalCost=" + Math.round(totalCost * 100) / 100.0 +
+                ", routes=[");
 
         for (Route vehicle: this.routes) {
         	if (vehicle.getRoute().size() > 2)
-        		result += "\n\t" + vehicle;
+        		result.append("\n\t").append(vehicle);
         }
 
         return result + "]}";

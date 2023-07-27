@@ -4,6 +4,8 @@ import main.algrithm.Cost;
 import main.algrithm.MyALNSSolution;
 import main.domain.Node;
 
+import java.util.logging.Logger;
+
 /**
  * <p>Title: GreedyRepair</p>
  * <p>Description: </p>
@@ -11,11 +13,13 @@ import main.domain.Node;
  */
 public class GreedyRepair extends ALNSAbstractRepair implements IALNSRepair {
 
+    private static final Logger logger = Logger.getLogger(GreedyRepair.class.getSimpleName());
+
     @Override
     public MyALNSSolution repair(MyALNSSolution s) {
         // 如果没有移除的客户，上一步错误
         if(s.removalCustomers.size() == 0) {
-            System.err.println("removalCustomers is empty!");
+            logger.severe("removalCustomers is empty!");
             return s;
         }
 
@@ -49,7 +53,6 @@ public class GreedyRepair extends ALNSAbstractRepair implements IALNSRepair {
 
                     // if a better insertion is found, set the position to insert in the move and update the minimum cost found
                     if (newCost.total < bestCost) {
-                        //System.out.println(varCost.checkFeasible());
                         bestCusP = i;
                         bestRouteP = j;
                         bestCost = newCost.total;

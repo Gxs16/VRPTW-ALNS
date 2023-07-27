@@ -11,7 +11,6 @@ import java.util.List;
 * <p>Title: ALNSSolution</p>  
 * <p>Description: </p>  
 * @author zll_hust
-* @date 2020年3月18日
 */
 public class MyALNSSolution {
 	
@@ -80,7 +79,6 @@ public class MyALNSSolution {
 		
 		Route removenRoute = this.routes.get(routePosition);
 		
-		//System.out.println(this);
 		double load = - removenRoute.getRoute().get(cusPosition).getDemand();
 		double cost = 
 				- distance[removenRoute.getRoute().get(cusPosition - 1).getId()][removenRoute.getRoute().get(cusPosition).getId()]

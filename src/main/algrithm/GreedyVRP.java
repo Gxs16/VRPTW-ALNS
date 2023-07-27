@@ -16,19 +16,19 @@ public class GreedyVRP {
     /**
      * All the customers
      */
-    private List<Node> customers;
+    private final List<Node> customers;
 
     /**
      * All the vehicles.
      */
-    private List<Route> vehicles;
+    private final List<Route> vehicles;
 
     /**
      * The distance matrix for the customers
      */
-    private double[][] distanceMatrix;
+    private final double[][] distanceMatrix;
     
-    private int vehicleCapacity;
+    private final int vehicleCapacity;
 
     /**
      * Constructor
@@ -47,7 +47,7 @@ public class GreedyVRP {
         }
     }
     
-    private int initialCustomerNr;
+    private final int initialCustomerNr;
     
     public int getCustomerNr() {
     	return this.initialCustomerNr;

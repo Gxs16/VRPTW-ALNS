@@ -9,24 +9,24 @@ public class Cost {
     public double loadViolation;
     public double timeViolation;
 
-    public Cost(){
-        total             = 0;
-        cost              = 0;
-        load		      = 0;
-        time		      = 0;
+    public Cost() {
+        total = 0;
+        cost = 0;
+        load = 0;
+        time = 0;
 
-        loadViolation     = 0;
-        timeViolation     = 0;
+        loadViolation = 0;
+        timeViolation = 0;
     }
 
     public Cost(Cost cost) {
-        this.total             =  cost.total;
-        this.cost              =  cost.cost;
-        this.load              =  cost.load;
-        this.time              =  cost.time;
+        this.total = cost.total;
+        this.cost = cost.cost;
+        this.load = cost.load;
+        this.time = cost.time;
 
-        this.loadViolation          =  cost.loadViolation;
-        this.timeViolation            =  cost.timeViolation;
+        this.loadViolation = cost.loadViolation;
+        this.timeViolation = cost.timeViolation;
     }
 
 
@@ -45,15 +45,13 @@ public class Cost {
 
     /**
      * Set the total cost based on alpha, beta
-     * @param alpha
-     * @param beta
      */
     public void calculateTotalCost(double alpha, double beta) {
-        total = cost + alpha * loadViolation  + beta * timeViolation;
+        total = cost + alpha * loadViolation + beta * timeViolation;
     }
 
     public void calculateTotalCost() {
-        total = cost + loadViolation  + timeViolation;
+        total = cost + loadViolation + timeViolation;
     }
 
     public void setLoadViol(double capacityviol) {

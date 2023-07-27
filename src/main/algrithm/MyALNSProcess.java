@@ -2,6 +2,7 @@ package main.algrithm;
 
 import java.io.IOException;
 import java.util.Random;
+import java.util.logging.Logger;
 
 import main.alns.config.ControlParameter;
 import main.alns.config.IALNSConfig;
@@ -51,9 +52,9 @@ public class MyALNSProcess {
     private long t_start;
     // time end
     private double T_end;
-    
+    private static final Logger logger = Logger.getLogger(MyALNSProcess.class.getSimpleName());
 
-    public MyALNSProcess(Solution s_, Instance instance, IALNSConfig c, ControlParameter cp) throws InterruptedException {
+    public MyALNSProcess(Solution s_, Instance instance, IALNSConfig c, ControlParameter cp) {
         
     	// 生成png
     	cpng = cp.isSolutionImages();
@@ -104,7 +105,7 @@ public class MyALNSProcess {
             MyALNSSolution s_t = repairOperator.repair(s_destroy);
             //o.onSolutionRepaired(this, s_t);
 
-            System.out.println("�������� ��" +  i + "��ǰ�� ��" + Math.round(s_t.cost.total * 100) / 100.0);
+            logger.info("迭代次数 ：" +  i + "当前解 ：" + Math.round(s_t.cost.total * 100) / 100.0);
 
             // 更新局部满意解
             if (s_t.cost.total < s_c.cost.total) {
@@ -139,17 +140,17 @@ public class MyALNSProcess {
 
         // 输出程序耗时s
         double s = Math.round((System.currentTimeMillis() - t_start) * 1000) / 1000000.;
-        System.out.println("\nALNS progress cost " + s + "s.");
+        logger.info("\nALNS progress cost " + s + "s.");
 
         // 输出算子使用情况
         for (IALNSDestroy destroy : destroy_ops){
-        	System.out.println(destroy.getClass().getName() + 
-        			" ��ʹ�� " + destroy.getDraws() + "��.");
+            logger.info(destroy.getClass().getName() +
+        			" 被使用 " + destroy.getDraws() + "次.");
         }
         
         for (IALNSRepair repair : repair_ops){
-        	System.out.println(repair.getClass().getName() + 
-        			" ��ʹ�� " + repair.getDraws() + "��.");
+            logger.info(repair.getClass().getName() +
+        			" 被使用 " + repair.getDraws() + "次.");
         }
         solution.testTime = s;
         return solution;
@@ -171,7 +172,6 @@ public class MyALNSProcess {
     }
 
     private void handleNewGlobalMinimum(IALNSDestroy destroyOperator, IALNSRepair repairOperator, MyALNSSolution s_t) throws IOException {
-        //System.out.println(String.format("[%d]: Found new global minimum: %.2f, Required Vehicles: %d, I_uns: %d", i, s_t.getCostFitness(), s_t.activeVehicles(), s_g.getUnscheduledJobs().size()));
         if (this.cpng) {
             //TODO OutputUtil.createPNG(s_t, i);
         }

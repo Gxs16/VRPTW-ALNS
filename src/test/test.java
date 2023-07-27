@@ -8,6 +8,8 @@ import main.alns.config.ControlParameter;
 import main.alns.config.IALNSConfig;
 import main.domain.Instance;
 
+import java.util.logging.Logger;
+
 public class test {
     private static final String[] SOLOMON_ALL = new String[]{
             "C101", "C102", "C103", "C104", "C105", "C106", "C107", "C108", "C109", "C201", "C202", "C203", "C204", "C205", "C206", "C207", "C208",
@@ -19,6 +21,7 @@ public class test {
     static String[] SOLOMON_CLUSTERRANDOM = new String[]{"RC101", "RC102", "RC103", "RC104", "RC105", "RC106", "RC107", "RC108", "RC201", "RC202", "RC203", "RC204", "RC205", "RC206", "RC207", "RC208"};
     static String[] VRPFD_INSTANCES = new String[]{"C108", "C206", "C203", "R202", "R207", "R104", "RC202", "RC205", "RC208"};
     static String[] Homberger_200 = new String[] {"C1_2_1", "C1_2_2", "C1_2_3", "C1_2_4"};
+    private static final Logger logger = Logger.getLogger(test.class.getSimpleName());
 
     public static void main(String args[]) {
 
@@ -55,12 +58,10 @@ public class test {
         Solver solver = new Solver();
         // 初始解
         Solution is = solver.getInitialSolution(instance);
-        //System.out.println(is);
-        //System.out.println(checkSolution.Check(is));
         // 满意解
         Solution ims = solver.improveSolution(is, c, cp, instance);
-        System.out.println(ims);
-        System.out.println(checkSolution.Check(ims));
+        logger.info(ims.toString());
+        logger.info(checkSolution.Check(ims));
 
         return new String[]{String.valueOf(ims.getTotalCost()), String.valueOf(ims.testTime)};
     }

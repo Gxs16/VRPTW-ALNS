@@ -8,18 +8,17 @@ import main.domain.Route;
  * <p>Title: CheckSolution</p>
  * <p>Description: </p>
  * @author zll_hust
- * @date 2020年3月1日
  */
 public class CheckSolution {
 
-    private double[][] distance;
+    private final double[][] distance;
 
     public CheckSolution(Instance instance) {
         this.distance = instance.getDistanceMatrix();
     }
 
     public String Check(Solution solution) {
-        String result = "";
+        StringBuilder result = new StringBuilder();
         double totalCost = 0;
 
         int id = 0;
@@ -57,21 +56,16 @@ public class CheckSolution {
                 if (Math.abs(vehicle.getCost().time - time) > 0.001) checkTime = false;
 
 
-                result += "\n check route " + id + ": "
-                        + "\n check cost = " + costInVehicle + "  " + checkCost
-                        + "\n check demand = " + loadInVehicle + "  " + checkLoad
-                        + "\n check time = " + time + "  " + checkTime
-                        + "\n check time windows = " + checkTimeWindows +"\n";
+                result.append("\n check route ").append(id).append(": ").append("\n check cost = ").append(costInVehicle).append("  ").append(checkCost).append("\n check demand = ").append(loadInVehicle).append("  ").append(checkLoad).append("\n check time = ").append(time).append("  ").append(checkTime).append("\n check time windows = ").append(checkTimeWindows).append("\n");
 
             }
         }
 
-        boolean checkTotalCost = true;
-        if (Math.abs(totalCost - solution.getTotalCost()) > 0.001) checkTotalCost = false;
+        boolean checkTotalCost = !(Math.abs(totalCost - solution.getTotalCost()) > 0.001);
 
-        result += "\ncheck total cost = " + Math.round(totalCost * 100) / 100.0 + "  " + checkTotalCost;
+        result.append("\ncheck total cost = ").append(Math.round(totalCost * 100) / 100.0).append("  ").append(checkTotalCost);
 
-        return result;
+        return result.toString();
     }
 
 }

@@ -2,9 +2,11 @@ package main.alns.destroy;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.logging.Logger;
 
 import main.algrithm.MyALNSSolution;
 import main.alns.operation.ALNSAbstractOperation;
+import main.alns.repair.GreedyRepair;
 import main.domain.Node;
 import main.domain.Route;
 
@@ -12,9 +14,9 @@ import main.domain.Route;
 * <p>Title: ShawDestroy</p>  
 * <p>Description: </p>  
 * @author zll_hust  
-* @date 2020��3��20��  
 */
 public class ShawDestroy extends ALNSAbstractOperation implements IALNSDestroy {
+	private static final Logger logger = Logger.getLogger(ShawDestroy.class.getSimpleName());
 	/*
 	@Override
 	public ALNSStrategieVisualizationManager getVisualizationManager() {
@@ -23,10 +25,10 @@ public class ShawDestroy extends ALNSAbstractOperation implements IALNSDestroy {
 	}
 	*/
 	@Override
-	public MyALNSSolution destroy(MyALNSSolution s, int removeNr) throws Exception {
+	public MyALNSSolution destroy(MyALNSSolution s, int removeNr) {
 		
 		if(s.removalCustomers.size() != 0) {
-				System.err.println("removalCustomers is not empty.");
+				logger.severe("removalCustomers is not empty.");
 				return s;
 		}
 

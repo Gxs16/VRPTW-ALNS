@@ -2,6 +2,7 @@ package main.alns.repair;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.logging.Logger;
 
 import main.algrithm.Cost;
 import main.algrithm.MyALNSSolution;
@@ -14,12 +15,12 @@ import main.domain.Node;
  * @author zll_hust
  */
 public class RegretRepair extends ALNSAbstractRepair implements IALNSRepair {
-
+    private static final Logger logger = Logger.getLogger(RegretRepair.class.getSimpleName());
     @Override
     public MyALNSSolution repair(MyALNSSolution s) {
         // 如果没有移除的客户，上一步错误
         if(s.removalCustomers.size() == 0) {
-            System.err.println("removalCustomers is empty!");
+            logger.severe("removalCustomers is empty!");
             return s;
         }
 
@@ -55,7 +56,6 @@ public class RegretRepair extends ALNSAbstractRepair implements IALNSRepair {
 
                     // if a better insertion is found, set the position to insert in the move and update the minimum cost found
                     if (newCost.total < first) {
-                        //System.out.println(varCost.checkFeasible());
                         bestCusP = i;
                         bestRouteP = j;
                         second = first;

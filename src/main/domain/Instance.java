@@ -1,16 +1,17 @@
 package main.domain;
 
+import main.alns.destroy.ShawDestroy;
+
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import java.util.logging.Logger;
 
 
-/**  
-* <p>Title: SolomnInstance</p>  
-* <p>Description: </p>  
+/**
 * @author zll_hust  
 */
 public class Instance {
@@ -20,6 +21,8 @@ public class Instance {
     private String name;
     private String type;
     private Random r;
+
+    private static final Logger logger = Logger.getLogger(Instance.class.getSimpleName());
     
 	public Random getRandom() {
 		return r;
@@ -131,7 +134,7 @@ public class Instance {
         
         numberOfNodes = customers.size();
         
-        System.out.println("Input customers success !");
+        logger.info("Input customers success !");
         
     }
     
@@ -162,8 +165,8 @@ public class Instance {
             row++;
         }
         bReader.close();
-        
-        System.out.println("Input vehicle success !");
+
+        logger.info("Input vehicle success !");
     }
     
     public int[] getVehicleInfo() {
