@@ -79,7 +79,7 @@ public class GreedyVRP {
         while (true) {
 
             // If we served all customers, exit.
-            if (this.customers.size() == 0)
+            if (this.customers.isEmpty())
                 break;
 
             // Get the last node of the current route. We will try to find the closest node to it that also satisfies the capacity constraint.
@@ -146,7 +146,7 @@ public class GreedyVRP {
                 solution.setTotalCost(solution.getTotalCost() + currentVehicle.getCost().cost);
                 
                 // If we used all vehicles, exit.
-                if ( this.vehicles.size()==0 ) {
+                if (this.vehicles.isEmpty()) {
                 	break;
                 	
                 // if we still have some vehicles, use.
@@ -168,7 +168,7 @@ public class GreedyVRP {
         
         solution.addRoute(currentVehicle);
         solution.setTotalCost(solution.getTotalCost() + currentVehicle.getCost().cost);
-        solution.setTotalCost((double)(Math.round(solution.getTotalCost() * 1000) / 1000.0));
+        solution.setTotalCost(Math.round(solution.getTotalCost() * 1000) / 1000.0);
 
         return solution;
     }

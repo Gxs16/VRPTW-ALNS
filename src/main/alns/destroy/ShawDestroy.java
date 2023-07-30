@@ -17,17 +17,11 @@ import main.domain.Route;
 */
 public class ShawDestroy extends ALNSAbstractOperation implements IALNSDestroy {
 	private static final Logger logger = Logger.getLogger(ShawDestroy.class.getSimpleName());
-	/*
-	@Override
-	public ALNSStrategieVisualizationManager getVisualizationManager() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-	*/
+
 	@Override
 	public MyALNSSolution destroy(MyALNSSolution s, int removeNr) {
 		
-		if(s.removalCustomers.size() != 0) {
+		if(!s.removalCustomers.isEmpty()) {
 				logger.severe("removalCustomers is not empty.");
 				return s;
 		}

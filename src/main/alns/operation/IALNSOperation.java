@@ -22,6 +22,5 @@ public interface IALNSOperation {
 
     void setDraws(int d);
 
-    //ALNSStrategieVisualizationManager getVisualizationManager();
 
 }

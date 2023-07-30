@@ -19,7 +19,7 @@ public class RegretRepair extends ALNSAbstractRepair implements IALNSRepair {
     @Override
     public MyALNSSolution repair(MyALNSSolution s) {
         // 如果没有移除的客户，上一步错误
-        if(s.removalCustomers.size() == 0) {
+        if(s.removalCustomers.isEmpty()) {
             logger.severe("removalCustomers is empty!");
             return s;
         }
@@ -39,7 +39,7 @@ public class RegretRepair extends ALNSAbstractRepair implements IALNSRepair {
 
             for(int j = 0; j < s.routes.size(); j++) {
 
-                if(s.routes.get(j).getRoute().size() < 1) {
+                if(s.routes.get(j).getRoute().isEmpty()) {
                     continue;
                 }
 
@@ -84,8 +84,6 @@ class BestPos implements Comparable<BestPos>{
     public Node insertNode;
     public double deltaCost;
 
-    public BestPos() {}
-
     public BestPos(Node insertNode, int customer, int route, double f) {
         this.insertNode = insertNode;
         this.bestRroutePosition = customer;
@@ -95,13 +93,6 @@ class BestPos implements Comparable<BestPos>{
 
     @Override
     public int compareTo(BestPos o) {
-        BestPos s = (BestPos) o;
-        if (s.deltaCost > this.deltaCost  ) {
-            return 1;
-        } else if (this.deltaCost == s.deltaCost) {
-            return 0;
-        } else {
-            return -1;
-        }
+        return Double.compare(o.deltaCost, this.deltaCost);
     }
 }

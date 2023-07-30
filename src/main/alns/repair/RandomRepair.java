@@ -19,7 +19,7 @@ public class RandomRepair extends ALNSAbstractRepair implements IALNSRepair {
     @Override
     public MyALNSSolution repair(MyALNSSolution s) {
         // 如果没有移除的客户，上一步错误
-        if(s.removalCustomers.size() == 0) {
+        if(s.removalCustomers.isEmpty()) {
             logger.severe("removalCustomers is empty!");
             return s;
         }
@@ -53,7 +53,7 @@ public class RandomRepair extends ALNSAbstractRepair implements IALNSRepair {
                 int insertRoutePosition = routeList.remove(0);
                 Route insertRoute = s.routes.get(insertRoutePosition);
 
-                while(insertRoute.getRoute().size() < 1) {
+                while(insertRoute.getRoute().isEmpty()) {
                     insertRoutePosition = routeList.remove(0);
                     insertRoute = s.routes.get(insertRoutePosition);
                 }

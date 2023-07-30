@@ -26,19 +26,7 @@ public class MyALNSSolution {
 	
 	public ArrayList<Node> removalCustomers;
 
-    public MyALNSSolution(Instance instance) {
-        this.routes = new ArrayList<>();
-        this.cost = new Cost();
-        this.vehicleNr = 0;
-        this.instance = instance;
-        
-        this.alpha = punish;
-        this.beta = punish;
-        
-        this.removalCustomers = new ArrayList<Node>();
-    }
-    
-    public MyALNSSolution(Solution sol, Instance instance) {
+	public MyALNSSolution(Solution sol, Instance instance) {
         this.cost = new Cost();
         cost.cost = sol.getTotalCost();
         cost.calculateTotalCost();
@@ -53,7 +41,7 @@ public class MyALNSSolution {
             this.routes.add(route.cloneRoute());
         }
         
-        this.removalCustomers = new ArrayList<Node>();
+        this.removalCustomers = new ArrayList<>();
     }
     
     public MyALNSSolution(MyALNSSolution sol) {
@@ -196,12 +184,12 @@ public class MyALNSSolution {
         
     @Override
     public String toString() {
-        String result = "Solution{" +
+        StringBuilder result = new StringBuilder("Solution{" +
                 "Cost = " + cost +
-                ", routes = [";
+                ", routes = [");
 
         for (Route vehicle: this.routes) {
-        	result += "\n\t" + vehicle;
+        	result.append("\n\t").append(vehicle);
         }
 
         return result + "]}";

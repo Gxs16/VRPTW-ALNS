@@ -17,17 +17,11 @@ import main.domain.Instance;
  */
 public class WorstCostDestroy extends ALNSAbstractOperation implements IALNSDestroy {
     private static final Logger logger = Logger.getLogger(WorstCostDestroy.class.getSimpleName());
-    /*
-	@Override
-	public ALNSStrategieVisualizationManager getVisualizationManager() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-	*/
-    @Override
-    public MyALNSSolution destroy(MyALNSSolution s, int removeNr) throws Exception {
 
-        if(s.removalCustomers.size() != 0) {
+    @Override
+    public MyALNSSolution destroy(MyALNSSolution s, int removeNr) {
+
+        if(!s.removalCustomers.isEmpty()) {
             logger.severe("removalCustomers is not empty.");
             return s;
         }
@@ -62,8 +56,6 @@ class Fitness implements Comparable<Fitness>{
     public int customerNo;
     public double fitness;
 
-    public Fitness() {}
-
     public Fitness(int cNo, double f) {
         customerNo = cNo;
         fitness = f;
@@ -82,14 +74,7 @@ class Fitness implements Comparable<Fitness>{
 
     @Override
     public int compareTo(Fitness o) {
-        Fitness s = (Fitness) o;
-        if (s.fitness > this.fitness  ) {
-            return 1;
-        } else if (this.fitness == s.fitness) {
-            return 0;
-        } else {
-            return -1;
-        }
+        return Double.compare(o.fitness, this.fitness);
     }
 
 }

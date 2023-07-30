@@ -18,7 +18,7 @@ public class GreedyRepair extends ALNSAbstractRepair implements IALNSRepair {
     @Override
     public MyALNSSolution repair(MyALNSSolution s) {
         // 如果没有移除的客户，上一步错误
-        if(s.removalCustomers.size() == 0) {
+        if(s.removalCustomers.isEmpty()) {
             logger.severe("removalCustomers is empty!");
             return s;
         }
@@ -36,7 +36,7 @@ public class GreedyRepair extends ALNSAbstractRepair implements IALNSRepair {
 
             for(int j = 0; j < s.routes.size(); j++) {
 
-                if(s.routes.get(j).getRoute().size() < 1) {
+                if(s.routes.get(j).getRoute().isEmpty()) {
                     continue;
                 }
 

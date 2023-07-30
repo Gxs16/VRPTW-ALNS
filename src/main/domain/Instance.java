@@ -1,7 +1,5 @@
 package main.domain;
 
-import main.alns.destroy.ShawDestroy;
-
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;

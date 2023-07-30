@@ -1,10 +1,5 @@
 package main.algrithm;
 
-import java.io.IOException;
-import java.util.Random;
-import java.util.logging.Logger;
-
-import main.alns.config.ControlParameter;
 import main.alns.config.IALNSConfig;
 import main.alns.destroy.IALNSDestroy;
 import main.alns.destroy.RandomDestroy;
@@ -16,18 +11,13 @@ import main.alns.repair.RandomRepair;
 import main.alns.repair.RegretRepair;
 import main.domain.Instance;
 
+import java.util.Random;
+import java.util.logging.Logger;
+
 public class MyALNSProcess {
-	// 可视化
-    //private final ALNSObserver o = new ALNSObserver();
-    // 可视化，针对alns进程
-    //private final ALNSProcessVisualizationManager apvm = new ALNSProcessVisualizationManager();
     // 参数
     private final IALNSConfig config;
     private final IALNSDestroy[] destroy_ops = new IALNSDestroy[]{
-            //new ProximityZoneDestroy(),
-            //new ZoneDestroy(),
-            //new NodesCountDestroy(false),
-            //new SubrouteDestroy(),
             new ShawDestroy(),
             new RandomDestroy(),
             new WorstCostDestroy()
@@ -40,10 +30,9 @@ public class MyALNSProcess {
 
     private final double T_end_t = 0.01;
     // 全局满意解
-    private MyALNSSolution s_g = null;
+    private MyALNSSolution s_g;
     // 局部满意解
-    private MyALNSSolution s_c = null;
-    private boolean cpng = false;
+    private MyALNSSolution s_c;
     private int i = 0;
     // time
     private double T;
@@ -54,38 +43,26 @@ public class MyALNSProcess {
     private double T_end;
     private static final Logger logger = Logger.getLogger(MyALNSProcess.class.getSimpleName());
 
-    public MyALNSProcess(Solution s_, Instance instance, IALNSConfig c, ControlParameter cp) {
+    public MyALNSProcess(Solution s_, Instance instance, IALNSConfig c) {
         
-    	// 生成png
-    	cpng = cp.isSolutionImages();
+
     	
         config = c;
         s_g = new MyALNSSolution(s_, instance);
         s_c = new MyALNSSolution(s_g);
         
-        // 初始化alns参数
         initStrategies();
-        
-        // 可视化
-        if (cp.isSolutionsLinechart()) {
-            //o.add(new SolutionsLinechart(this));
-        }
-        if (cp.isOperationsLinechart()) {
-            //o.add(new OperationsLinechart(this));
-        }
     }
 
     public Solution improveSolution() throws Exception {
-        //o.onThreadStart(this);
-    	
+
         T_s = -(config.getDelta() / Math.log(config.getBig_omega())) * s_c.cost.total;
         T = T_s;
         T_end = T_end_t * T_s;
         
         // 计时开始
         t_start = System.currentTimeMillis();
-        //o.onStartConfigurationObtained(this);
-        
+
         while (true) {
         	
         	// sc局部最优解，从局部最优中生成新解
@@ -95,15 +72,12 @@ public class MyALNSProcess {
             // 轮盘赌找出最优destroy、repair方法
             IALNSDestroy destroyOperator = getALNSDestroyOperator();
             IALNSRepair repairOperator = getALNSRepairOperator();
-            //o.onDestroyRepairOperationsObtained(this, destroyOperator, repairOperator, s_c_new, q);
 
             // destroy solution
             MyALNSSolution s_destroy = destroyOperator.destroy(s_c_new, q);
-            //o.onSolutionDestroy(this, s_destroy);
 
             // repair solution，重组后新解st
             MyALNSSolution s_t = repairOperator.repair(s_destroy);
-            //o.onSolutionRepaired(this, s_t);
 
             logger.info("迭代次数 ：" +  i + "当前解 ：" + Math.round(s_t.cost.total * 100) / 100.0);
 
@@ -121,8 +95,7 @@ public class MyALNSProcess {
                 // 概率接受较差解
                 handleWorseSolution(destroyOperator, repairOperator, s_t);
             }
-            //o.onAcceptancePhaseFinsihed(this, s_t);
-            
+
             if (i % config.getTau() == 0 && i > 0) {
                 segmentFinsihed();
                 //o.onSegmentFinsihed(this, s_t);
@@ -140,17 +113,15 @@ public class MyALNSProcess {
 
         // 输出程序耗时s
         double s = Math.round((System.currentTimeMillis() - t_start) * 1000) / 1000000.;
-        logger.info("\nALNS progress cost " + s + "s.");
+        logger.info("ALNS progress cost " + s + "s.");
 
         // 输出算子使用情况
         for (IALNSDestroy destroy : destroy_ops){
-            logger.info(destroy.getClass().getName() +
-        			" 被使用 " + destroy.getDraws() + "次.");
+            logger.info(destroy.getClass().getName() + " 被使用 " + destroy.getDraws() + "次.");
         }
         
         for (IALNSRepair repair : repair_ops){
-            logger.info(repair.getClass().getName() +
-        			" 被使用 " + repair.getDraws() + "次.");
+            logger.info(repair.getClass().getName() + " 被使用 " + repair.getDraws() + "次.");
         }
         solution.testTime = s;
         return solution;
@@ -171,10 +142,8 @@ public class MyALNSProcess {
         repairOperator.addToPi(config.getSigma_2());
     }
 
-    private void handleNewGlobalMinimum(IALNSDestroy destroyOperator, IALNSRepair repairOperator, MyALNSSolution s_t) throws IOException {
-        if (this.cpng) {
-            //TODO OutputUtil.createPNG(s_t, i);
-        }
+    private void handleNewGlobalMinimum(IALNSDestroy destroyOperator, IALNSRepair repairOperator, MyALNSSolution s_t) {
+
         //接受全局较优
         s_g = s_t;
         destroyOperator.addToPi(config.getSigma_1());
@@ -208,8 +177,6 @@ public class MyALNSProcess {
         // Update neue Wahrs. der Destroy Operatoren
         for (IALNSDestroy dstr : destroy_ops) {
             dstr.setP(dstr.getW() / w_sum);
-            //dstr.setDraws(0);
-            //dstr.setPi(0);
         }
         w_sum = 0;
         // Update neue Gewichtung der Repair Operatoren
@@ -222,8 +189,6 @@ public class MyALNSProcess {
         // Update neue Wahrs. der Repair Operatoren
         for (IALNSRepair rpr : repair_ops) {
             rpr.setP(rpr.getW() / w_sum);
-            //rpr.setDraws(0);
-            //rpr.setPi(0);
         }
     }
 
@@ -273,15 +238,6 @@ public class MyALNSProcess {
             rpr.setP(1 / (double) repair_ops.length);
         }
     }
-    /*
-    public ALNSObserver getO() {
-        return this.o;
-    }
-
-    public ALNSProcessVisualizationManager getApvm() {
-        return this.apvm;
-    }
-	*/
     public IALNSConfig getConfig() {
         return this.config;
     }
@@ -300,10 +256,6 @@ public class MyALNSProcess {
 
     public MyALNSSolution getS_c() {
         return this.s_c;
-    }
-
-    public boolean isCpng() {
-        return this.cpng;
     }
 
     public int getI() {

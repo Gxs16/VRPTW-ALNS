@@ -3,18 +3,11 @@ package main.alns.operation;
 import java.util.*;
 
 public abstract class ALNSAbstractOperation implements IALNSOperation {
-    //protected final ALNSStrategieVisualizationManager asvm = new ALNSStrategieVisualizationManager();
     private final Random r = new Random();
     private int pi;
     private double p;
     private int draws;
     private double w;
-
-    /*
-    public ALNSStrategieVisualizationManager getVisualizationManager() {
-        return asvm;
-    }
-	*/
 
     /**
      * 被使用的次数

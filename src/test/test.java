@@ -4,7 +4,6 @@ import main.algrithm.CheckSolution;
 import main.algrithm.Solution;
 import main.algrithm.Solver;
 import main.alns.config.ALNSConfiguration;
-import main.alns.config.ControlParameter;
 import main.alns.config.IALNSConfig;
 import main.domain.Instance;
 
@@ -23,32 +22,22 @@ public class test {
     static String[] Homberger_200 = new String[] {"C1_2_1", "C1_2_2", "C1_2_3", "C1_2_4"};
     private static final Logger logger = Logger.getLogger(test.class.getSimpleName());
 
-    public static void main(String args[]) {
+    public static void main(String[] args) throws Exception {
 
         String[] instances = { "C1_4_1" };
         String[][] result = new String[instances.length][];
 
         for (int j = 0; j < instances.length; j = j + 1) {
-            try {
-                result[j] = solve(
-                        instances[j],                    //需要测试的算例
-                        "Homberger",                      // 算例类型,输入Homberger或Solomon，注意大写
-                        400,                        //客户点数量，Solomon可选择 25,50,100，Homberger可选择200，400
-                        ALNSConfiguration.DEFAULT,    //ALNS相关参数
-                        new ControlParameter(
-                                false,                //历史满意解、当前满意解、新解的时序图，收敛效果展示
-                                false,                //ALNS算子时序图
-                                false                //生成解对应效果图（针对每次迭代的历史满意解）
-                        ));
-                //printToCSV("ALNS TEST", result, instances.length);
-            } catch (Exception e2) {
-                e2.printStackTrace();
-            }
+            result[j] = solve(
+                    instances[j],                    //需要测试的算例
+                    "Homberger",                      // 算例类型,输入Homberger或Solomon，注意大写
+                    400,                        //客户点数量，Solomon可选择 25,50,100，Homberger可选择200，400
+                    ALNSConfiguration.DEFAULT);
         }
     }
 
     //  solve函数，输出解 输入变量：算例名，客户数，
-    private static String[] solve(String name, String instanceType, int size, IALNSConfig c, ControlParameter cp) throws Exception {
+    private static String[] solve(String name, String instanceType, int size, IALNSConfig c) throws Exception {
 
         // 输入Solomon算例
         Instance instance = new Instance(size, name, instanceType);
@@ -59,7 +48,7 @@ public class test {
         // 初始解
         Solution is = solver.getInitialSolution(instance);
         // 满意解
-        Solution ims = solver.improveSolution(is, c, cp, instance);
+        Solution ims = solver.improveSolution(is, c, instance);
         logger.info(ims.toString());
         logger.info(checkSolution.Check(ims));
 
