@@ -29,7 +29,6 @@ public class ALNSProcess {
             new RandomRepair()
     };
 
-    private final double T_end_t = 0.01;
     // 全局满意解
     private ALNSSolution s_g;
     // 局部满意解
@@ -37,11 +36,6 @@ public class ALNSProcess {
     private int i = 0;
     // time
     private double T;
-    private double T_s;
-    // time start
-    private long t_start;
-    // time end
-    private double T_end;
     private static final Logger logger = Logger.getLogger(ALNSProcess.class.getSimpleName());
 
     public ALNSProcess(Solution s_, Instance instance, Config c) {
@@ -55,12 +49,12 @@ public class ALNSProcess {
 
     public Solution improveSolution() throws Exception {
 
-        T_s = -(config.getDelta() / Math.log(config.getBig_omega())) * s_c.cost.total;
-        T = T_s;
-        T_end = T_end_t * T_s;
-        
+        T = -(config.getDelta() / Math.log(config.getBig_omega())) * s_c.cost.total;
+        // time end
+
         // 计时开始
-        t_start = System.currentTimeMillis();
+        // time start
+        long t_start = System.currentTimeMillis();
 
         while (true) {
         	
@@ -96,7 +90,7 @@ public class ALNSProcess {
             }
 
             if (i % config.getTau() == 0 && i > 0) {
-                segmentFinsihed();
+                segmentFinished();
             }
             
             T = config.getC() * T;
@@ -160,7 +154,7 @@ public class ALNSProcess {
     }
 
 
-    private void segmentFinsihed() {
+    private void segmentFinished() {
         double w_sum = 0;
         // Update new weighting for Destroy Operator
         for (Destroy dstr : destroyOperations) {

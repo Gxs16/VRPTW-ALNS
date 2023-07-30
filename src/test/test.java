@@ -23,7 +23,7 @@ public class test {
 
     public static void main(String[] args) throws Exception {
 
-        String[] instances = { "rc2_4_4" };
+        String[] instances = { "c1_4_2" };
         String[][] result = new String[instances.length][];
 
         for (int j = 0; j < instances.length; j = j + 1) {
