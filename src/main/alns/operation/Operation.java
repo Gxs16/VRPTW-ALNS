@@ -1,10 +1,8 @@
 package main.alns.operation;
 
-public interface IALNSOperation {
+public interface Operation {
 
     int getPi();
-
-    void setPi(int pi);
 
     void addToPi(int pi);
 
@@ -19,8 +17,6 @@ public interface IALNSOperation {
     void drawn();
 
     int getDraws();
-
-    void setDraws(int d);
 
 
 }

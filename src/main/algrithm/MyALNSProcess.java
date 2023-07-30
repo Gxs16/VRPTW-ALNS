@@ -1,28 +1,29 @@
 package main.algrithm;
 
-import main.alns.config.IALNSConfig;
-import main.alns.destroy.IALNSDestroy;
-import main.alns.destroy.RandomDestroy;
-import main.alns.destroy.ShawDestroy;
-import main.alns.destroy.WorstCostDestroy;
-import main.alns.repair.GreedyRepair;
-import main.alns.repair.IALNSRepair;
-import main.alns.repair.RandomRepair;
-import main.alns.repair.RegretRepair;
+import main.alns.Config;
+import main.alns.operation.destroy.Destroy;
+import main.alns.operation.destroy.RandomDestroy;
+import main.alns.operation.destroy.ShawDestroy;
+import main.alns.operation.destroy.WorstCostDestroy;
+import main.alns.operation.repair.GreedyRepair;
+import main.alns.operation.repair.RandomRepair;
+import main.alns.operation.repair.RegretRepair;
+import main.alns.operation.repair.Repair;
 import main.domain.Instance;
+import main.domain.Solution;
 
 import java.util.Random;
 import java.util.logging.Logger;
 
 public class MyALNSProcess {
     // 参数
-    private final IALNSConfig config;
-    private final IALNSDestroy[] destroy_ops = new IALNSDestroy[]{
+    private final Config config;
+    private final Destroy[] destroyOperations = new Destroy[]{
             new ShawDestroy(),
             new RandomDestroy(),
             new WorstCostDestroy()
     };
-    private final IALNSRepair[] repair_ops = new IALNSRepair[]{
+    private final Repair[] repairOperations = new Repair[]{
             new RegretRepair(),
             new GreedyRepair(),
             new RandomRepair()
@@ -43,10 +44,8 @@ public class MyALNSProcess {
     private double T_end;
     private static final Logger logger = Logger.getLogger(MyALNSProcess.class.getSimpleName());
 
-    public MyALNSProcess(Solution s_, Instance instance, IALNSConfig c) {
-        
+    public MyALNSProcess(Solution s_, Instance instance, Config c) {
 
-    	
         config = c;
         s_g = new MyALNSSolution(s_, instance);
         s_c = new MyALNSSolution(s_g);
@@ -70,8 +69,8 @@ public class MyALNSProcess {
             int q = getQ(s_c_new);
 
             // 轮盘赌找出最优destroy、repair方法
-            IALNSDestroy destroyOperator = getALNSDestroyOperator();
-            IALNSRepair repairOperator = getALNSRepairOperator();
+            Destroy destroyOperator = getALNSDestroyOperator();
+            Repair repairOperator = getALNSRepairOperator();
 
             // destroy solution
             MyALNSSolution s_destroy = destroyOperator.destroy(s_c_new, q);
@@ -98,11 +97,9 @@ public class MyALNSProcess {
 
             if (i % config.getTau() == 0 && i > 0) {
                 segmentFinsihed();
-                //o.onSegmentFinsihed(this, s_t);
             }
             
             T = config.getC() * T;
-            //o.onIterationFinished(this, s_t);
             i++;
             
             if (i > config.getOmega() && s_g.feasible()) break;
@@ -116,18 +113,18 @@ public class MyALNSProcess {
         logger.info("ALNS progress cost " + s + "s.");
 
         // 输出算子使用情况
-        for (IALNSDestroy destroy : destroy_ops){
+        for (Destroy destroy : destroyOperations){
             logger.info(destroy.getClass().getName() + " 被使用 " + destroy.getDraws() + "次.");
         }
         
-        for (IALNSRepair repair : repair_ops){
+        for (Repair repair : repairOperations){
             logger.info(repair.getClass().getName() + " 被使用 " + repair.getDraws() + "次.");
         }
         solution.testTime = s;
         return solution;
     }
 
-    private void handleWorseSolution(IALNSDestroy destroyOperator, IALNSRepair repairOperator, MyALNSSolution s_t) {
+    private void handleWorseSolution(Destroy destroyOperator, Repair repairOperator, MyALNSSolution s_t) {
         //概率接受较差解
     	double p_accept = calculateProbabilityToAcceptTempSolutionAsNewCurrent(s_t);
         if (Math.random() < p_accept) {
@@ -137,12 +134,12 @@ public class MyALNSProcess {
         repairOperator.addToPi(config.getSigma_3());
     }
 
-    private void handleNewLocalMinimum(IALNSDestroy destroyOperator, IALNSRepair repairOperator) {
+    private void handleNewLocalMinimum(Destroy destroyOperator, Repair repairOperator) {
         destroyOperator.addToPi(config.getSigma_2());
         repairOperator.addToPi(config.getSigma_2());
     }
 
-    private void handleNewGlobalMinimum(IALNSDestroy destroyOperator, IALNSRepair repairOperator, MyALNSSolution s_t) {
+    private void handleNewGlobalMinimum(Destroy destroyOperator, Repair repairOperator, MyALNSSolution s_t) {
 
         //接受全局较优
         s_g = s_t;
@@ -165,8 +162,8 @@ public class MyALNSProcess {
 
     private void segmentFinsihed() {
         double w_sum = 0;
-        // Update neue Gewichtung der Destroy Operatoren
-        for (IALNSDestroy dstr : destroy_ops) {
+        // Update new weighting for Destroy Operator
+        for (Destroy dstr : destroyOperations) {
             double w_old1 = dstr.getW() * (1 - config.getR_p());
             double recentFactor = dstr.getDraws() < 1 ? 0 : (double) dstr.getPi() / (double) dstr.getDraws();
             double w_old2 = config.getR_p() * recentFactor;
@@ -174,44 +171,44 @@ public class MyALNSProcess {
             w_sum += w_new;
             dstr.setW(w_new);
         }
-        // Update neue Wahrs. der Destroy Operatoren
-        for (IALNSDestroy dstr : destroy_ops) {
+        // Update new probability for Destroy Operator
+        for (Destroy dstr : destroyOperations) {
             dstr.setP(dstr.getW() / w_sum);
         }
         w_sum = 0;
-        // Update neue Gewichtung der Repair Operatoren
-        for (IALNSRepair rpr : repair_ops) {
+        // Update new weighting for Repair Operator
+        for (Repair rpr : repairOperations) {
             double recentFactor = rpr.getDraws() < 1 ? 0 : (double) rpr.getPi() / (double) rpr.getDraws();
             double w_new = (rpr.getW() * (1 - config.getR_p())) + config.getR_p() * recentFactor;
             w_sum += w_new;
             rpr.setW(w_new);
         }
-        // Update neue Wahrs. der Repair Operatoren
-        for (IALNSRepair rpr : repair_ops) {
+        // Update new probability for Repair Operator
+        for (Repair rpr : repairOperations) {
             rpr.setP(rpr.getW() / w_sum);
         }
     }
 
 
-    private IALNSRepair getALNSRepairOperator() {
+    private Repair getALNSRepairOperator() {
         double random = Math.random();
         double threshold = 0.;
-        for (IALNSRepair rpr : repair_ops) {
+        for (Repair rpr : repairOperations) {
             threshold += rpr.getP();
             if (random <= threshold) {
                 rpr.drawn();
                 return rpr;
             }
         }
-        repair_ops[repair_ops.length - 1].drawn();
-        return repair_ops[repair_ops.length - 1];
+        repairOperations[repairOperations.length - 1].drawn();
+        return repairOperations[repairOperations.length - 1];
     }
 
 
-    private IALNSDestroy getALNSDestroyOperator() {
+    private Destroy getALNSDestroyOperator() {
         double random = Math.random();
         double threshold = 0.;
-        for (IALNSDestroy dstr : destroy_ops) {
+        for (Destroy dstr : destroyOperations) {
             threshold += dstr.getP();
             if (random <= threshold) {
                 dstr.drawn();
@@ -219,66 +216,18 @@ public class MyALNSProcess {
             }
         }
         
-        destroy_ops[destroy_ops.length - 1].drawn();
-        return destroy_ops[destroy_ops.length - 1];
+        destroyOperations[destroyOperations.length - 1].drawn();
+        return destroyOperations[destroyOperations.length - 1];
     }
 
 
     private void initStrategies() {
-        for (IALNSDestroy dstr : destroy_ops) {
-        	dstr.setDraws(0);
-            dstr.setPi(0);
-            dstr.setW(1.);
-            dstr.setP(1 / (double) destroy_ops.length);
+        for (Destroy destroy : destroyOperations) {
+            destroy.setP(1 / (double) destroyOperations.length);
         }
-        for (IALNSRepair rpr : repair_ops) {
-            rpr.setDraws(0);
-        	rpr.setPi(0);
-            rpr.setW(1.);
-            rpr.setP(1 / (double) repair_ops.length);
+        for (Repair repair : repairOperations) {
+            repair.setP(1 / (double) repairOperations.length);
         }
     }
-    public IALNSConfig getConfig() {
-        return this.config;
-    }
 
-    public IALNSDestroy[] getDestroy_ops() {
-        return this.destroy_ops;
-    }
-
-    public IALNSRepair[] getRepair_ops() {
-        return this.repair_ops;
-    }
-
-    public MyALNSSolution getS_g() {
-        return this.s_g;
-    }
-
-    public MyALNSSolution getS_c() {
-        return this.s_c;
-    }
-
-    public int getI() {
-        return this.i;
-    }
-
-    public double getT() {
-        return this.T;
-    }
-
-    public double getT_s() {
-        return this.T_s;
-    }
-
-    public long getT_start() {
-        return this.t_start;
-    }
-
-    public double getT_end_t() {
-        return this.T_end_t;
-    }
-
-    public double getT_end() {
-        return this.T_end;
-    }
 }

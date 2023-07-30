@@ -1,6 +1,4 @@
-package main.algrithm;
-
-import main.domain.Route;
+package main.domain;
 
 import java.util.ArrayList;
 import java.util.List;

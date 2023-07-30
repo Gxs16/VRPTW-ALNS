@@ -1,12 +1,11 @@
-package main.alns.destroy;
+package main.alns.operation.destroy;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.logging.Logger;
 
 import main.algrithm.MyALNSSolution;
-import main.alns.operation.ALNSAbstractOperation;
-import main.alns.repair.GreedyRepair;
+import main.alns.operation.AbstractOperation;
 import main.domain.Node;
 import main.domain.Route;
 
@@ -15,7 +14,7 @@ import main.domain.Route;
 * <p>Description: </p>  
 * @author zll_hust  
 */
-public class ShawDestroy extends ALNSAbstractOperation implements IALNSDestroy {
+public class ShawDestroy extends AbstractOperation implements Destroy {
 	private static final Logger logger = Logger.getLogger(ShawDestroy.class.getSimpleName());
 
 	@Override

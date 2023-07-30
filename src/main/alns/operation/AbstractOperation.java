@@ -2,12 +2,12 @@ package main.alns.operation;
 
 import java.util.*;
 
-public abstract class ALNSAbstractOperation implements IALNSOperation {
+public abstract class AbstractOperation implements Operation {
     private final Random r = new Random();
-    private int pi;
+    private int pi = 0;
     private double p;
-    private int draws;
-    private double w;
+    private int draws = 0;
+    private double w = 1.0;
 
     /**
      * 被使用的次数
@@ -29,10 +29,6 @@ public abstract class ALNSAbstractOperation implements IALNSOperation {
         return this.pi;
     }
 
-    public void setPi(int pi) {
-        this.pi = pi;
-    }
-
     public double getP() {
         return this.p;
     }
@@ -43,10 +39,6 @@ public abstract class ALNSAbstractOperation implements IALNSOperation {
 
     public int getDraws() {
         return this.draws;
-    }
-
-    public void setDraws(int draws) {
-        this.draws = draws;
     }
 
     public double getW() {

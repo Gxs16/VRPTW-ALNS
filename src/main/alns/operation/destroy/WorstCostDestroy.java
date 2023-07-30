@@ -1,11 +1,11 @@
-package main.alns.destroy;
+package main.alns.operation.destroy;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.logging.Logger;
 
 import main.algrithm.MyALNSSolution;
-import main.alns.operation.ALNSAbstractOperation;
+import main.alns.operation.AbstractOperation;
 import main.domain.Node;
 import main.domain.Route;
 import main.domain.Instance;
@@ -15,7 +15,7 @@ import main.domain.Instance;
  * <p>Description: </p>
  * @author zll_hust
  */
-public class WorstCostDestroy extends ALNSAbstractOperation implements IALNSDestroy {
+public class WorstCostDestroy extends AbstractOperation implements Destroy {
     private static final Logger logger = Logger.getLogger(WorstCostDestroy.class.getSimpleName());
 
     @Override
@@ -27,7 +27,7 @@ public class WorstCostDestroy extends ALNSAbstractOperation implements IALNSDest
         }
 
         // 计算fitness值，对客户进行评估。
-        ArrayList<Fitness> customerFitness = new  ArrayList<Fitness>();
+        ArrayList<Fitness> customerFitness = new ArrayList<>();
         for(Route route : s.routes) {
             for (Node customer : route.getRoute()) {
                 double fitness = Fitness.calculateFitness(s.instance, customer, route);
@@ -36,7 +36,7 @@ public class WorstCostDestroy extends ALNSAbstractOperation implements IALNSDest
         }
         Collections.sort(customerFitness);
 
-        ArrayList<Integer> removal = new ArrayList<Integer>();
+        ArrayList<Integer> removal = new ArrayList<>();
         for(int i = 0; i < removeNr; ++i) removal.add(customerFitness.get(i).customerNo);
 
         for(int j = 0; j < s.routes.size(); j++) {

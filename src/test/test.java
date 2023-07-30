@@ -1,11 +1,10 @@
 package test;
 
-import main.algrithm.CheckSolution;
-import main.algrithm.Solution;
+import main.algrithm.SolutionChecker;
 import main.algrithm.Solver;
-import main.alns.config.ALNSConfiguration;
-import main.alns.config.IALNSConfig;
+import main.alns.Config;
 import main.domain.Instance;
+import main.domain.Solution;
 
 import java.util.logging.Logger;
 
@@ -24,7 +23,7 @@ public class test {
 
     public static void main(String[] args) throws Exception {
 
-        String[] instances = { "C1_4_1" };
+        String[] instances = { "rc2_4_4" };
         String[][] result = new String[instances.length][];
 
         for (int j = 0; j < instances.length; j = j + 1) {
@@ -32,17 +31,17 @@ public class test {
                     instances[j],                    //需要测试的算例
                     "Homberger",                      // 算例类型,输入Homberger或Solomon，注意大写
                     400,                        //客户点数量，Solomon可选择 25,50,100，Homberger可选择200，400
-                    ALNSConfiguration.DEFAULT);
+                    Config.DEFAULT);
         }
     }
 
     //  solve函数，输出解 输入变量：算例名，客户数，
-    private static String[] solve(String name, String instanceType, int size, IALNSConfig c) throws Exception {
+    private static String[] solve(String name, String instanceType, int size, Config c) throws Exception {
 
         // 输入Solomon算例
         Instance instance = new Instance(size, name, instanceType);
         // 检查结果
-        CheckSolution checkSolution = new CheckSolution(instance);
+        SolutionChecker solutionChecker = new SolutionChecker(instance);
         // 解决策略
         Solver solver = new Solver();
         // 初始解
@@ -50,7 +49,7 @@ public class test {
         // 满意解
         Solution ims = solver.improveSolution(is, c, instance);
         logger.info(ims.toString());
-        logger.info(checkSolution.Check(ims));
+        logger.info(solutionChecker.check(ims));
 
         return new String[]{String.valueOf(ims.getTotalCost()), String.valueOf(ims.testTime)};
     }

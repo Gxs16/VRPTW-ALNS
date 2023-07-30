@@ -1,4 +1,4 @@
-package main.alns.repair;
+package main.alns.operation.repair;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -6,6 +6,7 @@ import java.util.logging.Logger;
 
 import main.algrithm.Cost;
 import main.algrithm.MyALNSSolution;
+import main.alns.operation.AbstractOperation;
 import main.domain.Node;
 
 
@@ -14,7 +15,7 @@ import main.domain.Node;
  * <p>Description: </p>
  * @author zll_hust
  */
-public class RegretRepair extends ALNSAbstractRepair implements IALNSRepair {
+public class RegretRepair extends AbstractOperation implements Repair {
     private static final Logger logger = Logger.getLogger(RegretRepair.class.getSimpleName());
     @Override
     public MyALNSSolution repair(MyALNSSolution s) {

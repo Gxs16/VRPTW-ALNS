@@ -1,10 +1,11 @@
-package main.alns.repair;
+package main.alns.operation.repair;
 
 import java.util.*;
 import java.util.logging.Logger;
 
 import main.algrithm.Cost;
 import main.algrithm.MyALNSSolution;
+import main.alns.operation.AbstractOperation;
 import main.domain.Node;
 import main.domain.Route;
 
@@ -13,7 +14,7 @@ import main.domain.Route;
  * <p>Description: </p>
  * @author zll_hust
  */
-public class RandomRepair extends ALNSAbstractRepair implements IALNSRepair {
+public class RandomRepair extends AbstractOperation implements Repair {
     private static final Logger logger = Logger.getLogger(RandomRepair.class.getSimpleName());
 
     @Override

@@ -3,6 +3,7 @@ package main.algrithm;
 import main.domain.Instance;
 import main.domain.Node;
 import main.domain.Route;
+import main.domain.Solution;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -90,9 +91,9 @@ public class MyALNSSolution {
 		Route insertRoute = this.routes.get(routePosition);
 
 		// 计算load和cost的变化量
-		double load = + insertCustomer.getDemand();
+		double load = insertCustomer.getDemand();
 		double cost = 
-				+ distance[insertRoute.getRoute().get(insertCusPosition - 1).getId()][insertCustomer.getId()]
+				distance[insertRoute.getRoute().get(insertCusPosition - 1).getId()][insertCustomer.getId()]
 				+ distance[insertCustomer.getId()][insertRoute.getRoute().get(insertCusPosition).getId()]
 				- distance[insertRoute.getRoute().get(insertCusPosition - 1).getId()][insertRoute.getRoute().get(insertCusPosition).getId()];
 
@@ -132,9 +133,9 @@ public class MyALNSSolution {
 		
 		Route insertRoute = this.routes.get(routePosition).cloneRoute();
 		
-		double load = + insertCustomer.getDemand();
+		double load = insertCustomer.getDemand();
 		double cost = 
-				+ distance[insertRoute.getRoute().get(insertCusPosition - 1).getId()][insertCustomer.getId()]
+				distance[insertRoute.getRoute().get(insertCusPosition - 1).getId()][insertCustomer.getId()]
 				+ distance[insertCustomer.getId()][insertRoute.getRoute().get(insertCusPosition).getId()]
 				- distance[insertRoute.getRoute().get(insertCusPosition - 1).getId()][insertRoute.getRoute().get(insertCusPosition).getId()];
 		

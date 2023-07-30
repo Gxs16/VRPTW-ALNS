@@ -1,7 +1,7 @@
-package main.alns.destroy;
+package main.alns.operation.destroy;
 
 import main.algrithm.MyALNSSolution;
-import main.alns.operation.ALNSAbstractOperation;
+import main.alns.operation.AbstractOperation;
 import main.domain.Route;
 
 import java.util.ArrayList;
@@ -14,7 +14,7 @@ import java.util.logging.Logger;
 * <p>Description: </p>  
 * @author zll_hust  
  */
-public class RandomDestroy extends ALNSAbstractOperation implements IALNSDestroy {
+public class RandomDestroy extends AbstractOperation implements Destroy {
 	private static final Logger logger = Logger.getLogger(RandomDestroy.class.getSimpleName());
 
 
@@ -31,7 +31,7 @@ public class RandomDestroy extends ALNSAbstractOperation implements IALNSDestroy
 			// 获取随机数
 			Random r = s.instance.getRandom();
 			
-    		ArrayList<Integer> routeList= new ArrayList<Integer>();
+    		ArrayList<Integer> routeList= new ArrayList<>();
             for(int j = 0; j < s.routes.size(); j++)
                 routeList.add(j);  
             
@@ -47,9 +47,9 @@ public class RandomDestroy extends ALNSAbstractOperation implements IALNSDestroy
 			}
 
 			// 选择被移除的客户
-			int removenCustomerPosition = r.nextInt(removenRoute.getRoute().size() - 2) + 1;
+			int removedCustomerPosition = r.nextInt(removenRoute.getRoute().size() - 2) + 1;
 			
-			s.removeCustomer(removenRoutePosition, removenCustomerPosition);
+			s.removeCustomer(removenRoutePosition, removedCustomerPosition);
 		}
 
 		return s;

@@ -1,7 +1,8 @@
-package main.alns.repair;
+package main.alns.operation.repair;
 
 import main.algrithm.Cost;
 import main.algrithm.MyALNSSolution;
+import main.alns.operation.AbstractOperation;
 import main.domain.Node;
 
 import java.util.logging.Logger;
@@ -11,7 +12,7 @@ import java.util.logging.Logger;
  * <p>Description: </p>
  * @author zll_hust
  */
-public class GreedyRepair extends ALNSAbstractRepair implements IALNSRepair {
+public class GreedyRepair extends AbstractOperation implements Repair {
 
     private static final Logger logger = Logger.getLogger(GreedyRepair.class.getSimpleName());
 

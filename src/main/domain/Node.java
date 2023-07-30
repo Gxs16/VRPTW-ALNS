@@ -7,7 +7,7 @@ package main.domain;
  */
 public class Node {
 	
-	private double timeWindows[];
+	private double[] timeWindows;
 	private double serviceTime;
 
     /**
@@ -29,18 +29,6 @@ public class Node {
      * The current customer's demand.
      */
     private double demand;
-
-    /**
-     * Empty default constructor.
-     */
-    public Node(Node n) {
-    	this.x = n.x;
-    	this.y = n.y;
-    	this.id = n.id;
-    	this.demand = n.demand;
-    	this.serviceTime = n.serviceTime;
-    	this.timeWindows = new double[] { n.timeWindows[0], n.timeWindows[1] };
-    }
 
     public Node() {
 

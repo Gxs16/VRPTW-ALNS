@@ -3,21 +3,22 @@ package main.algrithm;
 
 import main.domain.Instance;
 import main.domain.Route;
+import main.domain.Solution;
 
 /**
  * <p>Title: CheckSolution</p>
  * <p>Description: </p>
  * @author zll_hust
  */
-public class CheckSolution {
+public class SolutionChecker {
 
     private final double[][] distance;
 
-    public CheckSolution(Instance instance) {
+    public SolutionChecker(Instance instance) {
         this.distance = instance.getDistanceMatrix();
     }
 
-    public String Check(Solution solution) {
+    public String check(Solution solution) {
         StringBuilder result = new StringBuilder();
         double totalCost = 0;
 

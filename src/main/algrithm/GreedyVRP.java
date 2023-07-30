@@ -4,6 +4,7 @@ package main.algrithm;
 import main.domain.Instance;
 import main.domain.Node;
 import main.domain.Route;
+import main.domain.Solution;
 
 import java.util.ArrayList;
 import java.util.List;
