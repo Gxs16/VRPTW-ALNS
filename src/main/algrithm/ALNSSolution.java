@@ -13,7 +13,7 @@ import java.util.List;
 * <p>Description: </p>  
 * @author zll_hust
 */
-public class MyALNSSolution {
+public class ALNSSolution {
 	
     public List<Route> routes;
     public Cost cost;
@@ -27,7 +27,7 @@ public class MyALNSSolution {
 	
 	public ArrayList<Node> removalCustomers;
 
-	public MyALNSSolution(Solution sol, Instance instance) {
+	public ALNSSolution(Solution sol, Instance instance) {
         this.cost = new Cost();
         cost.cost = sol.getTotalCost();
         cost.calculateTotalCost();
@@ -45,7 +45,7 @@ public class MyALNSSolution {
         this.removalCustomers = new ArrayList<>();
     }
     
-    public MyALNSSolution(MyALNSSolution sol) {
+    public ALNSSolution(ALNSSolution sol) {
     	this.cost = new Cost(sol.cost);
         this.vehicleNr = sol.vehicleNr;
         this.instance = sol.instance;
@@ -196,7 +196,7 @@ public class MyALNSSolution {
         return result + "]}";
     }
     
-	public int compareTo(MyALNSSolution arg0) {
+	public int compareTo(ALNSSolution arg0) {
 		if (this.cost.total >  arg0.cost.total ) {
 			return 1;
 		} else if (this.cost == arg0.cost) {

@@ -13,12 +13,9 @@ import java.util.logging.Logger;
 * @author zll_hust  
 */
 public class Instance {
-	
-    private int[] vehicleInfo;
-    private int[][] customerInfo;
-    private String name;
-    private String type;
-    private Random r;
+
+    private final String type;
+    private final Random r;
 
     private static final Logger logger = Logger.getLogger(Instance.class.getSimpleName());
     
@@ -26,15 +23,11 @@ public class Instance {
 		return r;
 	}
 
-	public void setR(Random r) {
-		this.r = r;
-	}
-	
     /**
      * This list will keep all the nodes of the problem.
      * NOTE: position 0 of the list contains the depot.
      */
-    private List<Node> customers;
+    private final List<Node> customers;
 
     /**
      * The available vehicles numbers.
@@ -49,7 +42,7 @@ public class Instance {
     /**
      * A 2-D matrix that will keep the distances of every node to each other.
      */
-    private double[][] distanceMatrix;
+    private final double[][] distanceMatrix;
 
     /**
      * The total number of customers.
@@ -78,11 +71,10 @@ public class Instance {
 	
     public Instance(int size, String name, String instanceType) throws IOException {
         // 读取算例数据
-    	this.name = name;
-    	this.type = instanceType; 
+        this.type = instanceType;
     	importVehicleData(size, name);
     	
-    	this.customers = new ArrayList<Node>();
+    	this.customers = new ArrayList<>();
         importCustomerData(size, name);
        
         this.distanceMatrix = new double[size + 5][size + 5];
@@ -109,7 +101,7 @@ public class Instance {
         
         while ((line = bReader.readLine()) != null) {
         	// 以空格为间隔符读取数据
-            String datavalue[] = line.split("\\s+");
+            String[] datavalue = line.split("\\s+");
 
             if (datavalue.length > 0 && datavalue[0].equals("CUST")) {
                 data_in_x_lines = 2;
@@ -151,13 +143,13 @@ public class Instance {
 
         String line;
         while ((line = bReader.readLine()) != null) {
-            String datavalue[] = line.split("\\s+");
+            String[] datavalue = line.split("\\s+");
 
             if (row == 4) {
             	// 可用车辆数量
-                this.vehicleNr = Integer.valueOf(datavalue[1]);
+                this.vehicleNr = Integer.parseInt(datavalue[1]);
                 // 车辆容量
-                this.vehicleCapacity = Integer.valueOf(datavalue[2]);
+                this.vehicleCapacity = Integer.parseInt(datavalue[2]);
                 break;
             }
             row++;
@@ -166,19 +158,7 @@ public class Instance {
 
         logger.info("Input vehicle success !");
     }
-    
-    public int[] getVehicleInfo() {
-        return vehicleInfo;
-    }
 
-    public int[][] getCustomerInfo() {
-        return customerInfo;
-    }
-
-    public String getName() {
-        return this.name;
-    }
-    
     /**
      * A helper function that creates the distance matrix.
      */
@@ -189,8 +169,8 @@ public class Instance {
             for (int j = 0; j < this.numberOfNodes; j++) {
                 Node n2 = this.customers.get(j);
 
-                this.distanceMatrix[i][j] =(double)(Math.round ( Math.sqrt(Math.pow(n1.getX() - n2.getX(), 2) +
-                        Math.pow(n1.getY() - n2.getY(), 2)) * 100 ) / 100.0);;
+                this.distanceMatrix[i][j] = Math.round ( Math.sqrt(Math.pow(n1.getX() - n2.getX(), 2) +
+                        Math.pow(n1.getY() - n2.getY(), 2)) * 100 ) / 100.0;
             }
         }
     }

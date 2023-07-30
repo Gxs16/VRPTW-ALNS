@@ -1,6 +1,6 @@
 package main.alns.operation.destroy;
 
-import main.algrithm.MyALNSSolution;
+import main.algrithm.ALNSSolution;
 import main.alns.operation.AbstractOperation;
 import main.domain.Route;
 
@@ -19,7 +19,7 @@ public class RandomDestroy extends AbstractOperation implements Destroy {
 
 
 	@Override
-	public MyALNSSolution destroy(MyALNSSolution s, int removeNr) {
+	public ALNSSolution destroy(ALNSSolution s, int removeNr) {
 		
 		if(!s.removalCustomers.isEmpty()) {
 			logger.severe("removalCustomers is not empty.");

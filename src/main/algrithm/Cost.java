@@ -54,18 +54,6 @@ public class Cost {
         total = cost + loadViolation + timeViolation;
     }
 
-    public void setLoadViol(double capacityviol) {
-        this.loadViolation = capacityviol;
-    }
-
-    public void setCost(double cost) {
-        this.cost = cost;
-    }
-
-    public double getTotal() {
-        return total;
-    }
-
     public double getLoadViolation() {
         return loadViolation;
     }
@@ -74,23 +62,4 @@ public class Cost {
         return timeViolation;
     }
 
-    public double getLoad() {
-        return load;
-    }
-
-    public void setLoad(double load) {
-        this.load = load;
-    }
-
-    public double getCost() {
-        return cost;
-    }
-
-    public void setTotal(double total) {
-        this.total = total;
-    }
-
-    public void setTimeViolation(double timeViolation) {
-        this.timeViolation = timeViolation;
-    }
 }

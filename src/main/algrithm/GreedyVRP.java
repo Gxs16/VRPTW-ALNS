@@ -36,26 +36,15 @@ public class GreedyVRP {
      */
     public GreedyVRP(Instance instance) {
 		this.customers = instance.getCustomers();
-		this.initialCustomerNr = instance.getCustomerNr();
-		this.distanceMatrix = instance.getDistanceMatrix();
+        this.distanceMatrix = instance.getDistanceMatrix();
 		this.vehicleCapacity = instance.getVehicleCapacity();
 		
 		int vehicleNr = instance.getVehicleNr();
-		this.vehicles = new ArrayList<Route>();
+		this.vehicles = new ArrayList<>();
 		for(int i = 0;i < vehicleNr; ++i) {
 			Route route = new Route(i);
 			this.vehicles.add(route);
         }
-    }
-    
-    private final int initialCustomerNr;
-    
-    public int getCustomerNr() {
-    	return this.initialCustomerNr;
-    }
-
-    public double[][] getDistanceMatrix() {
-        return distanceMatrix;
     }
 
     /**

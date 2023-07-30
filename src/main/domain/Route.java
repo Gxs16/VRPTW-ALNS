@@ -105,12 +105,5 @@ public class Route {
 	public Cost getCost() {
 		return this.cost;
 	}
-	
-	/**
-	 * @param cost the cost to set
-	 */
-	public void setCost(Cost cost) {
-		this.cost = cost;
-	}
 
 }

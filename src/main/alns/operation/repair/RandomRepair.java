@@ -4,7 +4,7 @@ import java.util.*;
 import java.util.logging.Logger;
 
 import main.algrithm.Cost;
-import main.algrithm.MyALNSSolution;
+import main.algrithm.ALNSSolution;
 import main.alns.operation.AbstractOperation;
 import main.domain.Node;
 import main.domain.Route;
@@ -18,7 +18,7 @@ public class RandomRepair extends AbstractOperation implements Repair {
     private static final Logger logger = Logger.getLogger(RandomRepair.class.getSimpleName());
 
     @Override
-    public MyALNSSolution repair(MyALNSSolution s) {
+    public ALNSSolution repair(ALNSSolution s) {
         // 如果没有移除的客户，上一步错误
         if(s.removalCustomers.isEmpty()) {
             logger.severe("removalCustomers is empty!");

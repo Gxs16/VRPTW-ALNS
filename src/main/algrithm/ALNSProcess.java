@@ -15,7 +15,7 @@ import main.domain.Solution;
 import java.util.Random;
 import java.util.logging.Logger;
 
-public class MyALNSProcess {
+public class ALNSProcess {
     // 参数
     private final Config config;
     private final Destroy[] destroyOperations = new Destroy[]{
@@ -31,9 +31,9 @@ public class MyALNSProcess {
 
     private final double T_end_t = 0.01;
     // 全局满意解
-    private MyALNSSolution s_g;
+    private ALNSSolution s_g;
     // 局部满意解
-    private MyALNSSolution s_c;
+    private ALNSSolution s_c;
     private int i = 0;
     // time
     private double T;
@@ -42,13 +42,13 @@ public class MyALNSProcess {
     private long t_start;
     // time end
     private double T_end;
-    private static final Logger logger = Logger.getLogger(MyALNSProcess.class.getSimpleName());
+    private static final Logger logger = Logger.getLogger(ALNSProcess.class.getSimpleName());
 
-    public MyALNSProcess(Solution s_, Instance instance, Config c) {
+    public ALNSProcess(Solution s_, Instance instance, Config c) {
 
         config = c;
-        s_g = new MyALNSSolution(s_, instance);
-        s_c = new MyALNSSolution(s_g);
+        s_g = new ALNSSolution(s_, instance);
+        s_c = new ALNSSolution(s_g);
         
         initStrategies();
     }
@@ -65,7 +65,7 @@ public class MyALNSProcess {
         while (true) {
         	
         	// sc局部最优解，从局部最优中生成新解
-            MyALNSSolution s_c_new = new MyALNSSolution(s_c);
+            ALNSSolution s_c_new = new ALNSSolution(s_c);
             int q = getQ(s_c_new);
 
             // 轮盘赌找出最优destroy、repair方法
@@ -73,10 +73,10 @@ public class MyALNSProcess {
             Repair repairOperator = getALNSRepairOperator();
 
             // destroy solution
-            MyALNSSolution s_destroy = destroyOperator.destroy(s_c_new, q);
+            ALNSSolution s_destroy = destroyOperator.destroy(s_c_new, q);
 
             // repair solution，重组后新解st
-            MyALNSSolution s_t = repairOperator.repair(s_destroy);
+            ALNSSolution s_t = repairOperator.repair(s_destroy);
 
             logger.info("迭代次数 ：" +  i + "当前解 ：" + Math.round(s_t.cost.total * 100) / 100.0);
 
@@ -124,7 +124,7 @@ public class MyALNSProcess {
         return solution;
     }
 
-    private void handleWorseSolution(Destroy destroyOperator, Repair repairOperator, MyALNSSolution s_t) {
+    private void handleWorseSolution(Destroy destroyOperator, Repair repairOperator, ALNSSolution s_t) {
         //概率接受较差解
     	double p_accept = calculateProbabilityToAcceptTempSolutionAsNewCurrent(s_t);
         if (Math.random() < p_accept) {
@@ -139,7 +139,7 @@ public class MyALNSProcess {
         repairOperator.addToPi(config.getSigma_2());
     }
 
-    private void handleNewGlobalMinimum(Destroy destroyOperator, Repair repairOperator, MyALNSSolution s_t) {
+    private void handleNewGlobalMinimum(Destroy destroyOperator, Repair repairOperator, ALNSSolution s_t) {
 
         //接受全局较优
         s_g = s_t;
@@ -147,11 +147,11 @@ public class MyALNSProcess {
         repairOperator.addToPi(config.getSigma_1());
     }
 
-    private double calculateProbabilityToAcceptTempSolutionAsNewCurrent(MyALNSSolution s_t) {
+    private double calculateProbabilityToAcceptTempSolutionAsNewCurrent(ALNSSolution s_t) {
         return Math.exp (-(s_t.cost.total - s_c.cost.total) / T);
     }
 
-    private int getQ(MyALNSSolution s_c2) {
+    private int getQ(ALNSSolution s_c2) {
         int q_l = Math.min((int) Math.ceil(0.05 * s_c2.instance.getCustomerNr()), 10);
         int q_u = Math.min((int) Math.ceil(0.20 * s_c2.instance.getCustomerNr()), 30);
 

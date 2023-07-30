@@ -13,7 +13,7 @@ public class Solver {
     }
 
     public Solution improveSolution(Solution s, Config ac, Instance is) throws Exception {
-        MyALNSProcess ALNS = new MyALNSProcess(s, is, ac);
+        ALNSProcess ALNS = new ALNSProcess(s, is, ac);
     	return ALNS.improveSolution();
     }
 }

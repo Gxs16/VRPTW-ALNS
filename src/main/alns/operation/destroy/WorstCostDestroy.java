@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.logging.Logger;
 
-import main.algrithm.MyALNSSolution;
+import main.algrithm.ALNSSolution;
 import main.alns.operation.AbstractOperation;
 import main.domain.Node;
 import main.domain.Route;
@@ -19,7 +19,7 @@ public class WorstCostDestroy extends AbstractOperation implements Destroy {
     private static final Logger logger = Logger.getLogger(WorstCostDestroy.class.getSimpleName());
 
     @Override
-    public MyALNSSolution destroy(MyALNSSolution s, int removeNr) {
+    public ALNSSolution destroy(ALNSSolution s, int removeNr) {
 
         if(!s.removalCustomers.isEmpty()) {
             logger.severe("removalCustomers is not empty.");
