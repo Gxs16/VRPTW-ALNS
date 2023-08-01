@@ -1,4 +1,4 @@
-package main.algrithm;
+package main.domain;
 
 public class Cost {
     public double total;

@@ -15,7 +15,7 @@ import main.domain.Solution;
 import java.util.Random;
 import java.util.logging.Logger;
 
-public class ALNSProcess {
+public class AdaptiveLargeNeighborhoodSearch {
     // 参数
     private final Config config;
     private final Destroy[] destroyOperations = new Destroy[]{
@@ -32,24 +32,24 @@ public class ALNSProcess {
     // 全局满意解
     private ALNSSolution s_g;
     // 局部满意解
-    private ALNSSolution s_c;
+    private ALNSSolution localSatisfiedSolution;
     private int i = 0;
     // time
     private double T;
-    private static final Logger logger = Logger.getLogger(ALNSProcess.class.getSimpleName());
+    private static final Logger logger = Logger.getLogger(AdaptiveLargeNeighborhoodSearch.class.getSimpleName());
 
-    public ALNSProcess(Solution s_, Instance instance, Config c) {
+    public AdaptiveLargeNeighborhoodSearch(Solution s_, Instance instance, Config c) {
 
         config = c;
         s_g = new ALNSSolution(s_, instance);
-        s_c = new ALNSSolution(s_g);
+        localSatisfiedSolution = new ALNSSolution(s_g);
         
         initStrategies();
     }
 
-    public Solution improveSolution() throws Exception {
+    public Solution solve() throws Exception {
 
-        T = -(config.getDelta() / Math.log(config.getBig_omega())) * s_c.cost.total;
+        T = -(config.getDelta() / Math.log(config.getBig_omega())) * localSatisfiedSolution.cost.total;
         // time end
 
         // 计时开始
@@ -59,7 +59,7 @@ public class ALNSProcess {
         while (true) {
         	
         	// sc局部最优解，从局部最优中生成新解
-            ALNSSolution s_c_new = new ALNSSolution(s_c);
+            ALNSSolution s_c_new = new ALNSSolution(localSatisfiedSolution);
             int q = getQ(s_c_new);
 
             // 轮盘赌找出最优destroy、repair方法
@@ -75,8 +75,8 @@ public class ALNSProcess {
             logger.info("迭代次数 ：" +  i + "当前解 ：" + Math.round(s_t.cost.total * 100) / 100.0);
 
             // 更新局部满意解
-            if (s_t.cost.total < s_c.cost.total) {
-                s_c = s_t;
+            if (s_t.cost.total < localSatisfiedSolution.cost.total) {
+                localSatisfiedSolution = s_t;
                 // 更新全局满意解，sg全局满意解
                 if (s_t.cost.total < s_g.cost.total) {
                     handleNewGlobalMinimum(destroyOperator, repairOperator, s_t);
@@ -104,7 +104,7 @@ public class ALNSProcess {
 
         // 输出程序耗时s
         double s = Math.round((System.currentTimeMillis() - t_start) * 1000) / 1000000.;
-        logger.info("ALNS progress cost " + s + "s.");
+        logger.info("AdaptiveLargeNeighborhoodSearch progress cost " + s + "s.");
 
         // 输出算子使用情况
         for (Destroy destroy : destroyOperations){
@@ -122,7 +122,7 @@ public class ALNSProcess {
         //概率接受较差解
     	double p_accept = calculateProbabilityToAcceptTempSolutionAsNewCurrent(s_t);
         if (Math.random() < p_accept) {
-            s_c = s_t;
+            localSatisfiedSolution = s_t;
         }
         destroyOperator.addToPi(config.getSigma_3());
         repairOperator.addToPi(config.getSigma_3());
@@ -142,7 +142,7 @@ public class ALNSProcess {
     }
 
     private double calculateProbabilityToAcceptTempSolutionAsNewCurrent(ALNSSolution s_t) {
-        return Math.exp (-(s_t.cost.total - s_c.cost.total) / T);
+        return Math.exp (-(s_t.cost.total - localSatisfiedSolution.cost.total) / T);
     }
 
     private int getQ(ALNSSolution s_c2) {

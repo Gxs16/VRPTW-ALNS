@@ -6,80 +6,65 @@ package main.domain;
  * Every instance of this class represents a Node (customer) of the VRP problem.
  */
 public class Node {
-	
-	private double[] timeWindows;
-	private double serviceTime;
+    private final double readyTime;
+    private final double dueTime;
+	private final double serviceTime;
 
     /**
      * The X-axis coordinate in a theoretical 2-D space for the specific customer.
      */
-    private double x;
+    private final double x;
 
     /**
      * The Y-axis coordinate in a theoretical 2-D space for the specific customer.
      */
-    private double y;
+    private final double y;
 
     /**
      * A unique identifier for the customer
      */
-    private int id;
+    private final int id;
 
     /**
      * The current customer's demand.
      */
-    private double demand;
-
-    public Node() {
-
-	}
+    private final double demand;
+    public Node(int id, double x, double y, double demand, double readyTime, double dueTime, double serviceTime){
+        this.id = id;
+        this.x = x;
+        this.y = y;
+        this.demand = demand;
+        this.readyTime = readyTime;
+        this.dueTime = dueTime;
+        this.serviceTime = serviceTime;
+    }
     
 	public double getServiceTime() {
         return this.serviceTime;
     }
 
-    public void setServiceTime(double serviceTime) {
-        this.serviceTime = serviceTime;
-    }
-    
-	public double[] getTimeWindow() {
-        return this.timeWindows;
+    public double getReadyTime() {
+        return this.readyTime;
     }
 
-    public void setTimeWindow(double start, double end) {
-        this.timeWindows = new double[] { start, end };
+    public double getDueTime() {
+        return this.dueTime;
     }
 
 	public double getX() {
         return x;
     }
 
-    public void setX(double x) {
-        this.x = x;
-    }
-
     public double getY() {
         return y;
-    }
-
-    public void setY(double y) {
-        this.y = y;
     }
 
     public int getId() {
         return id;
     }
 
-    public void setId(int id) {
-        this.id = id;
-    }
-
     public double getDemand() {
         return demand;
-    }
-
-    public void setDemand(double demand) {
-        this.demand = demand;
     }
 
     @Override

@@ -42,9 +42,9 @@ public class SolutionChecker {
                     time += distance[vehicle.getRoute().get(j - 1).getId()][vehicle.getRoute().get(j).getId()];
                     costInVehicle += distance[vehicle.getRoute().get(j - 1).getId()][vehicle.getRoute().get(j).getId()];
                     loadInVehicle += vehicle.getRoute().get(j).getDemand();
-                    if (time < vehicle.getRoute().get(j).getTimeWindow()[0])
-                        time = vehicle.getRoute().get(j).getTimeWindow()[0];
-                    else if (time > vehicle.getRoute().get(j).getTimeWindow()[1])
+                    if (time < vehicle.getRoute().get(j).getReadyTime())
+                        time = vehicle.getRoute().get(j).getReadyTime();
+                    else if (time > vehicle.getRoute().get(j).getDueTime())
                         checkTimeWindows = false;
 
                     time += vehicle.getRoute().get(j).getServiceTime();

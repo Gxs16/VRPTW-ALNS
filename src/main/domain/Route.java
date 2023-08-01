@@ -1,7 +1,5 @@
 package main.domain;
 
-import main.algrithm.Cost;
-
 import java.util.ArrayList;
 import java.util.List;
 

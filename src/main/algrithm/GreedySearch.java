@@ -12,7 +12,7 @@ import java.util.List;
 /**
  * This class contains all the necessary functionality in order to solve the VRP problem using a greedy approach.
  */
-public class GreedyVRP {
+public class GreedySearch {
 
     /**
      * All the customers
@@ -34,8 +34,8 @@ public class GreedyVRP {
     /**
      * Constructor
      */
-    public GreedyVRP(Instance instance) {
-		this.customers = instance.getCustomers();
+    public GreedySearch(Instance instance) {
+		this.customers = new ArrayList<>(instance.getCustomers());
         this.distanceMatrix = instance.getDistanceMatrix();
 		this.vehicleCapacity = instance.getVehicleCapacity();
 		
@@ -52,7 +52,7 @@ public class GreedyVRP {
      *
      * @return Solution
      */
-    public Solution getInitialSolution() {
+    public Solution solve() {
         // The final Solution
         Solution solution = new Solution();
 
@@ -88,8 +88,8 @@ public class GreedyVRP {
                 // If we found a customer with closer that the value of "smallestDistance" ,store him temporarily
                 if ( distance < smallestDistance &&
                 		(currentVehicle.getCost().load + n.getDemand()) <= vehicleCapacity &&
-                		(currentVehicle.getCost().time + distanceMatrix[currentVehicle.getId()][n.getId()]) < n.getTimeWindow()[1] &&
-                		(currentVehicle.getCost().time + distanceMatrix[currentVehicle.getId()][n.getId()] + n.getServiceTime() + distanceMatrix[n.getId()][depot.getId()]) < depot.getTimeWindow()[1] )
+                		(currentVehicle.getCost().time + distanceMatrix[currentVehicle.getId()][n.getId()]) < n.getDueTime() &&
+                		(currentVehicle.getCost().time + distanceMatrix[currentVehicle.getId()][n.getId()] + n.getServiceTime() + distanceMatrix[n.getId()][depot.getId()]) < depot.getDueTime())
                 {
                     smallestDistance = distance;
                     closestNode = n;
@@ -105,7 +105,7 @@ public class GreedyVRP {
                 currentVehicle.getCost().time += smallestDistance;
                 
                 // waiting time windows open
-                if (currentVehicle.getCost().time < closestNode.getTimeWindow()[0]) currentVehicle.getCost().time = closestNode.getTimeWindow()[0];
+                if (currentVehicle.getCost().time < closestNode.getReadyTime()) currentVehicle.getCost().time = closestNode.getReadyTime();
                 
                 currentVehicle.getCost().time += closestNode.getServiceTime();
                 

@@ -1,7 +1,9 @@
 package test;
 
+import main.DataProcess;
+import main.algrithm.AdaptiveLargeNeighborhoodSearch;
+import main.algrithm.GreedySearch;
 import main.algrithm.SolutionChecker;
-import main.algrithm.Solver;
 import main.alns.Config;
 import main.domain.Instance;
 import main.domain.Solution;
@@ -38,16 +40,16 @@ public class test {
     //  solve函数，输出解 输入变量：算例名，客户数，
     private static String[] solve(String name, String instanceType, int size, Config c) throws Exception {
 
-        // 输入Solomon算例
-        Instance instance = new Instance(size, name, instanceType);
+        Instance instance = DataProcess.initInstance(instanceType, size, name);
         // 检查结果
         SolutionChecker solutionChecker = new SolutionChecker(instance);
-        // 解决策略
-        Solver solver = new Solver();
         // 初始解
-        Solution is = solver.getInitialSolution(instance);
+        GreedySearch greedyVRP = new GreedySearch(instance);
+        Solution is =  greedyVRP.solve();
         // 满意解
-        Solution ims = solver.improveSolution(is, c, instance);
+        AdaptiveLargeNeighborhoodSearch alns = new AdaptiveLargeNeighborhoodSearch(is, instance, c);
+        Solution ims = alns.solve();
+
         logger.info(ims.toString());
         logger.info(solutionChecker.check(ims));
 

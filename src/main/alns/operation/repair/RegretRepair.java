@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.logging.Logger;
 
-import main.algrithm.Cost;
+import main.domain.Cost;
 import main.algrithm.ALNSSolution;
 import main.alns.operation.AbstractOperation;
 import main.domain.Node;
@@ -25,7 +25,7 @@ public class RegretRepair extends AbstractOperation implements Repair {
             return s;
         }
 
-        ArrayList<BestPos> bestPoses = new ArrayList<BestPos>();
+        ArrayList<BestPos> bestPoses = new ArrayList<>();
 
         int removeNr = s.removalCustomers.size();
 
@@ -71,7 +71,7 @@ public class RegretRepair extends AbstractOperation implements Repair {
         Collections.sort(bestPoses);
 
         for(BestPos bp : bestPoses) {
-            s.insertCustomer(bp.bestCustomerPosition, bp.bestRroutePosition, bp.insertNode);
+            s.insertCustomer(bp.bestCustomerPosition, bp.bestRoutePosition, bp.insertNode);
         }
 
         return s;
@@ -80,14 +80,14 @@ public class RegretRepair extends AbstractOperation implements Repair {
 
 class BestPos implements Comparable<BestPos>{
 
-    public int bestRroutePosition;
+    public int bestRoutePosition;
     public int bestCustomerPosition;
     public Node insertNode;
     public double deltaCost;
 
     public BestPos(Node insertNode, int customer, int route, double f) {
         this.insertNode = insertNode;
-        this.bestRroutePosition = customer;
+        this.bestRoutePosition = customer;
         this.bestCustomerPosition = route;
         this.deltaCost = f;
     }

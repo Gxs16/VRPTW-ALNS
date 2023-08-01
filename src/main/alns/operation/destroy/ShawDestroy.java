@@ -81,7 +81,7 @@ public class ShawDestroy extends AbstractOperation implements Destroy {
 	        		
 	        		double fitness = l * 2 + 
 	        				3 * distance[lastRemove.getId()][relatedNode.getId()] +
-	        				2 * Math.abs(lastRemove.getTimeWindow()[0] - relatedNode.getTimeWindow()[0]) +
+	        				2 * Math.abs(lastRemove.getReadyTime() - relatedNode.getReadyTime()) +
 	        				2 * Math.abs(lastRemove.getDemand() - relatedNode.getDemand());
 	        		
 	        		if(minRelate > fitness) {

@@ -1,6 +1,6 @@
 package main.alns.operation.repair;
 
-import main.algrithm.Cost;
+import main.domain.Cost;
 import main.algrithm.ALNSSolution;
 import main.alns.operation.AbstractOperation;
 import main.domain.Node;

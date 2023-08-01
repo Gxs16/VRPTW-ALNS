@@ -3,7 +3,7 @@ package main.alns.operation.repair;
 import java.util.*;
 import java.util.logging.Logger;
 
-import main.algrithm.Cost;
+import main.domain.Cost;
 import main.algrithm.ALNSSolution;
 import main.alns.operation.AbstractOperation;
 import main.domain.Node;
